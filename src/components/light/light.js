@@ -16,10 +16,11 @@ class Light extends Component {
     // let canvasHeight = 800;
     let canvasWidth = document.documentElement.clientWidth;
     let canvasHeight = document.documentElement.clientHeight;
-    // console.log(canvasWidth, canvasHeight)
+    console.log(canvasWidth, canvasHeight)
     // console.dir(document.documentElement)
     let blockWidth = canvasWidth / rowLength;
     let blockHeight = canvasHeight / columnLength;
+    // console.log(blockWidth,blockHeight)
     // console.log(blockWidth, blockWidth*rowLength, canvasWidth, blockHeight, blockHeight*columnLength, canvasHeight)
 
     canvas1.width = canvasWidth;
@@ -74,7 +75,7 @@ class Light extends Component {
         }
       }
     }
-
+    
     function light(x, y) {
       // draw circle
       ctx2.globalCompositeOperation = "source-over";
@@ -84,8 +85,8 @@ class Light extends Component {
       ctx2.arc(x, y, lightRadius, 0, 2*Math.PI, "anticlockwise");
       ctx2.fillStyle = gra;
       ctx2.fill();
-      
       // draw shadow
+      // let idx = 0;
       for(let block of blocks) {
         let corners = {
           topLeft: {x: block[0] * blockWidth, y: block[1] * blockHeight},
@@ -98,15 +99,20 @@ class Light extends Component {
           ctx2.fillRect(0, 0, canvasWidth, canvasHeight);
           break;
         } else {
+          // idx++;
+          // console.log(idx)
           let points = [];
           for(let corner in corners) {
             let dis = calDis(corners[corner].x, corners[corner].y, x, y);
+            let newDis = calNewDis(corners[corner].x, corners[corner].y, x, y)
+            // console.log(newDis)
             let xRatio = -(x - corners[corner].x) / dis;
             let yRatio = -(y - corners[corner].y) / dis;
             if(dis < lightRadius) {
               let difValue = lightRadius - dis;
               points.push({
                 dis: dis,
+                newDis: newDis,
                 inside: {
                   x: corners[corner].x, 
                   y: corners[corner].y
@@ -120,8 +126,18 @@ class Light extends Component {
           }
       
           if(points.length === 4) {
-            points.sort((a, b) => a.dis - b.dis);
+            points.sort((a, b) => a.newDis - b.newDis);
+            // points.sort((a, b) => a.dis - b.dis);
             ctx2.globalCompositeOperation = "destination-out";
+            
+            // if(idx === 46) {
+            //   console.log(points)
+            //   ctx2.fillStyle = "white";
+            //   ctx2.fillText(0, points[0].inside.x, points[0].inside.y)
+            //   ctx2.fillText(1, points[1].inside.x, points[1].inside.y)
+            //   ctx2.fillText(2, points[2].inside.x, points[2].inside.y)
+            // }
+
             ctx2.fillStyle = "red";
             ctx2.beginPath();
             if(y > corners.topLeft.y && y < corners.bottomRight.y || x > corners.topLeft.x && x < corners.bottomRight.x) {
@@ -155,6 +171,10 @@ class Light extends Component {
 
     function calDis(x1, y1, x2, y2) {
       return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+    }
+
+    function calNewDis(x1, y1, x2, y2) {
+      return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow((y2 - y1) / blockHeight * blockWidth, 2));
     }
   }
 
