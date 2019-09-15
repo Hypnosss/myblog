@@ -6,7 +6,7 @@ class linkToPassage extends Component {
     // console.log(this.props.time)
     let time, renderTime;
     if(this.props.time) {
-      let weekArr = ["七", "一", "二", "三", "四", "五" ,"六"];
+      let weekArr = ["日", "一", "二", "三", "四", "五" ,"六"];
       let time = new Date(this.props.time);
       let year = time.getFullYear();
       let month = time.getMonth();

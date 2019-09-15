@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import marked from "marked";
+
 class pageMain extends Component {
   constructor(props) {
     super(props);
@@ -48,12 +50,12 @@ class pageMain extends Component {
         <div className="pageTitle">
           {this.state.data?this.state.data[0].title:1}
         </div>
-        <div className="pageWords">
-          {this.state.data?this.state.data[0].content:1}
+        <div className="pageWords" dangerouslySetInnerHTML={{__html: this.state.data?marked(this.state.data[0].content):1}} >
         </div>
       </div>
     );
   }
 }
+
  
 export default pageMain;

@@ -67,3 +67,25 @@ body {
   max-width: 100%;
   word-wrap: break-word;
 }
+
+.pageTitle {
+  text-align: center;
+  font-size: 40px;
+  margin: 10px 0;
+  /* font-weight: bold; */
+}
+
+.pageWords {
+  font-size: 20px;
+}
+
+.pageWords p {
+  margin-bottom: 20px;
+  /* line-height: 24px; */
+  font-weight: 300;
+}
+
+.pageWords hr {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  margin-bottom: 20px;
+}
